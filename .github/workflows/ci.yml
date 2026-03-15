@@ -37,8 +37,8 @@ jobs:
     - name: Install Dependencies
       run: npm install 
 
-    - name: Generate Prisma Client
-      run: ./node_modules/.bin/prisma generate
+    # - name: Generate Prisma Client
+    #   run: ./node_modules/.bin/prisma generate
 
     - name: Setup Prisma Database Schema
       env:        
