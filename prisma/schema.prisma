@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User{
+  id String @id @default(uuid()) 
+  name String 
+  email String  @unique
+  password String
+  refreshToken String?
+  createdAt DateTime @default(now())
+
+  jobs Job[]
+  companies Company[]
+}
+
+
+model Job{
+  id String @id @default(uuid())
+  title String
+  description String?
+  source JobSource @default(LINKEDIN)
+  jobStatus JobStatus @default(APPLIED)
+  salarymin Int? 
+  salarymax Int?
+  joburl String?
+  notes String?
+  appliedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+
+ //foreign keys
+ userId String
+ companyId String?
+
+ //relations
+ user User @relation(fields: [userId], references: [id], onDelete: Cascade )
+ company Company? @relation(fields: [companyId] , references: [id] , onDelete: Cascade)
+
+  interviews Interview[]
+  contacts Contact[]
+}
+
+enum JobSource{
+  LINKEDIN
+  REFERRAL
+  COMPANY_WEBSITE
+  JOB_BOARD
+  OTHER
+}
+
+enum JobStatus{
+  APPLIED
+  INTERVIEWING
+  OFFERED
+  REJECTED
+  ACCEPTED
+}
+
+model Company{
+  id String @id @default(uuid())
+  name String
+  location String?
+  industry String?
+  website String?
+  notes String?
+  rating Int? 
+  createdAt DateTime @default(now())
+
+  userId String 
+
+  jobs Job[]
+  users User @relation(fields: [userId] , references: [id], onDelete: Cascade)
+
+
+
+}
+
+model Interview{
+  id String @id @default(uuid())
+  interviewType InterviewType @default(HR_SCREEN)
+  status InterviewStatus @default(SCHEDULED)
+  scheduledAt DateTime
+  duration Int?
+  notes String?
+  createdAt DateTime @default(now())
+
+  //foreign key
+  jobId String
+
+  job Job @relation(fields: [jobId] , references: [id] , onDelete: Cascade)
+
+}
+
+model Contact{
+  id String @id @default(uuid())
+  name String 
+  email String
+  phone String?
+  role Role @default(HR)
+  linkedin String?
+  notes String?
+  createdAt DateTime @default(now())
+
+  jobId String
+
+  job Job @relation(fields: [jobId] , references: [id] , onDelete: Cascade)
+}
+
+enum Role{
+  RECRUITER
+  HIRING_MANAGER
+  HR
+}
+
+enum InterviewType{
+  HR_SCREEN
+  TECHNICAL
+  BEHAVIORAL
+  FINAL_ROUND
+  OTHER
+}
+
+enum InterviewStatus{
+  SCHEDULED
+  COMPLETED
+  CANCELED
+}
+

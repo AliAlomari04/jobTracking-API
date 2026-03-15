@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: job_tracker_api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/app/src
+    environment:
+      - DATABASE_URL=postgresql://postgres:password123@localhost:8080/job_tracker?schema=public
+      - PORT=3000
+    depends_on:
+      db:
+        condition: service_healthy #Wait till the db is ready
+    
+  db:
+    image: postgres:15-alpine
+    container_name: job_tracker_db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password123
+      - POSTGRES_DB=job_tracker
+    ports:
+      - "8080:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d job_tracker"]
+      interval: 5s
+      timeout: 35s
+      retries: 5
+      
+volumes:
+  postgres_data: 
