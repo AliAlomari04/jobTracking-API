@@ -8,7 +8,6 @@ import contactRoutes from './routes/contact.routes.js'
 import interviewRoutes from './routes/interview.routes.js'
 import getDashboardroutes from './routes/dashboard.routes.js'
 import cookieParser from 'cookie-parser'
-import { connectDB } from './config/db.js';
 import dotenv from 'dotenv'
 import helmet from 'helmet'
 import ratelimit from 'express-rate-limit'
@@ -58,11 +57,7 @@ app.use('/api/dashboard' , getDashboardroutes)
 // error handling
 app.use(notFound);
 app.use(errorHandler)
-const PORT = process.env.PORT || 3000;
-app.listen(PORT , ()=>{
-    console.log(`Server is running on port : ${PORT}`);
-    connectDB()
-})
+
 
 
 export default app;
