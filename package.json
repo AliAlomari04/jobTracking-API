@@ -31,21 +31,22 @@
     "@babel/core": "^7.29.0",
     "@babel/preset-env": "^7.29.0",
     "babel-jest": "^30.3.0",
+    "cross-env": "^10.1.0",
     "jest": "^30.3.0",
     "nodemon": "^3.1.14",
     "prisma": "5.10.0",
     "supertest": "^7.2.2"
   },
-  "jest":{
-    "testEnvironment":"node" ,
-    "transform":{
-      "^.+\\.js$":"babel-jest"
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
     },
-    "transformIgnorePatterns":[
+    "transformIgnorePatterns": [
       "/node_modules/",
       "/mnt/"
     ],
-    "testPathIgnorePatterns":[
+    "testPathIgnorePatterns": [
       "/node_modules/",
       "/mnt/"
     ]
