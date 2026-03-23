@@ -36,4 +36,4 @@ npm test
 
 ## API Docs
 
-Start the server and go to `http://localhost:3000/api-docs`
+Start the server and go to `http://localhost:8081/api-docs`
